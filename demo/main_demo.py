@@ -26,7 +26,7 @@ warning( )	想定外の事が発生しそうな場合
 error( )	重大なエラーにより、一部の機能を実行できない場合
 critical( )	プログラム自体が実行を続けられないことを表す、致命的な不具合の場合
 """
-LOGFILE = r''
+LOGFILE = r'\logfile\log.txt'
 formatter = '%(asctime)s - %(levelname)s - %(message)s'
 logging.basicConfig(level=logging.INFO, format=formatter, filename=LOGFILE)
 # """ ↑logの設定 """
@@ -44,7 +44,7 @@ def main_request():
     # slack_post(str(mes))
     # logを吐きだす
     print(mes)
-    logging.info(logfile=LOGFILE, message='プログラム終了')
+    logging.info('プログラム終了')
 
 
 if __name__ == '__main__':

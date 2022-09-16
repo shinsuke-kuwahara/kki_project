@@ -70,10 +70,10 @@ def D_request():
     # 処理パラメータとして設定する値が複数ある場合には「＆」で区切る
     # 仕様書通りに設定しないと動作しない。真は「true」、「True」ではない、偽も同様に「false」でなければならない
     # 月のリクエスト数を部署毎に管理を行いたいのでユーザーの設定を行う。
-    uri = ''
+    uri = 'https://kki-1105.dx-suite.com/Sorter/api/v1/add?runSortingFlag=true&sendOcrFlag=true&userId=80144'
 
     # これはブラウザ上で設定を行ったものをコピペする長すぎて扱いずらいので変数に代入している
-    api_key = ""
+    api_key = "29ade314c7cfbf28aa16e0b91dc9cc007d90860ea9a9ed43019d7deeddc30af2465be8c4ed52a8ad89016e5122c2a725c95e424fa4ed3759c3d0f4142f2fb9c5"
 
     # ここにAPIキーを指定する
     headers = {

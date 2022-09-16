@@ -7,12 +7,12 @@ import pandas as pd
 import requests
 
 # 保存先
-PATH = pathlib.WindowsPath(r'')
+PATH = pathlib.WindowsPath(r'\\10.100.108.150\disk1\テック事業部共有\demo')
 print(f"{PATH}PATH")
 
 # 仕分け結果をダウンロードしてファイルに保存する
 def demo_transfer(sortid, headers):
-    uri = ''
+    uri = 'https://kki-1105.dx-suite.com/Sorter/api/v1/csvDownload'
 
     data = {
         'sortingUnitId': sortid
