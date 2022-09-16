@@ -107,7 +107,7 @@ def D_request():
     except Exception as e:
         traceback.print_exc()
         # ログにエラーの情報を書かせる
-        logging.exception("取得したエラーは下記の内容です")
+        logging.exception("取得したエラーは下記の内容です。")
         # エラー内容を通知
         # slack_post("PDFが指定フォルダにないか正常に読み取れませんでした")
         # プログラムを終了する
