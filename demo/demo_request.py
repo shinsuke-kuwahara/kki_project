@@ -130,7 +130,7 @@ def D_request():
         # messageにはslackに送信する文面を格納する
         # レスポンスに200が含まれていればOK
         if "success" in result:
-            message = "リクエストが正常に行われました"
+            message = "リクエストが正常に行われました。"
             sort_json = res.json()
             sortid = str(sort_json['sortingUnitId'])
             print(message)
@@ -149,7 +149,7 @@ def D_request():
     except Exception as e:
         traceback.print_exc()
         # ログにエラーの情報を書かせる
-        logging.exception("取得したエラーは下記の内容です")
+        logging.exception("取得したエラーは下記の内容です。")
         # エラー内容を通知
         # slack_post("仕分けのリクエストが正常に行えませんでした")
         # プログラムを終了する
