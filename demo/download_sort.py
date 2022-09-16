@@ -8,7 +8,7 @@ import requests
 
 # 保存先
 PATH = pathlib.WindowsPath(r'')
-print(PATH)
+print(f"{PATH}PATH")
 
 # 仕分け結果をダウンロードしてファイルに保存する
 def demo_transfer(sortid, headers):
