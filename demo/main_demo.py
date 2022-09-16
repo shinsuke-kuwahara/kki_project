@@ -13,7 +13,7 @@ import logging
 from demo_request import D_request
 from download_sort import demo_transfer
 # Slackへ通知を行うモジュール1444
-# from　slack_post import demo_slack_post
+# from　slack_post import demo_slack_pos
 
 """ ↑モジュール """
 
