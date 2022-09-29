@@ -44,6 +44,12 @@ warning( )	想定外の事が発生しそうな場合
 error( )	重大なエラーにより、一部の機能を実行できない場合
 critical( )	プログラム自体が実行を続けられないことを表す、致命的な不具合の場合
 """
+logfile = '格納したいファイルパスをファイル名、拡張子を含めて指定'
+formatter = '%(asctime)s - %(levelname)s - %(message)s'
+logging.basicConfig(level=logging.INFO, format=formatter, filename=logfile)
+""" ↑logの設定 """
+
+""" ↓関数 """
 
 
 # DXSLへリクエストを行う関数

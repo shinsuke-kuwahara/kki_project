@@ -37,7 +37,7 @@ def main_request():
     logging.info('リクエスト完了')
     # 起動したことを通知
     # slack_post('<!channel>\nDEMO_１.リクエストのプログラムを起動しました')
-    print("リクエストプログラムを起動")
+
     mes, sortid, headers = D_request()
     demo_transfer(sortid, headers)
     # webhook_mesというリスト型変数に格納されているメッセージを最後にまとめて通知する
