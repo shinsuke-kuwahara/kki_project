@@ -14,7 +14,7 @@ from demo_request import D_request
 from download_sort import demo_transfer
 # Slackへ通知を行うモジュール
 # from　slack_post import demo_slack_pos
-
+from kki_function.loginfo import loginfo
 """ ↑モジュール """
 
 """ ↓logの設定 """
@@ -34,6 +34,7 @@ logging.basicConfig(level=logging.INFO, format=formatter, filename=LOGFILE)
 
 # プログラムを動作させる関数
 def main_request():
+    loginfo(logfile=LOGFILE, message="tesuto")
     logging.info('リクエスト完了')
     # 起動したことを通知
     # slack_post('<!channel>\nDEMO_１.リクエストのプログラムを起動しました')

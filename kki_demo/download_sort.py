@@ -8,7 +8,6 @@ import requests
 
 # 保存先
 PATH = pathlib.WindowsPath(r'\\10.100.108.150\disk1\テック事業部共有\demo')
-print(f"{PATH}PATH")
 
 
 # 仕分け結果をダウンロードしてファイルに保存する
