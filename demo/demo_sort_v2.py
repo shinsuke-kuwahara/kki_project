@@ -10,6 +10,8 @@ import time
 # ログの吐きだしに使用するモジュール
 import logging
 # ブラウザを自動操作させるモジュール
+# seleniumはバージョンが4以上だとfind_by_elementのメソッドが異なるので注意
+# バジョーンの確認はpycharmのターミナルでpip listを叩く
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
@@ -108,15 +110,6 @@ logging.basicConfig(level=logging.INFO, format=formatter, filename=logfile)
 """ ↓chromeの設定 """
 # chromedriverの設定
 # ドライバーの位置を明示する1
-# browser = webdriver.Chrome(executable_path=os.path.expanduser('~') + r"\anaconda3\chromedriver.exe")
-
-
-# chromeOptions = webdriver.ChromeOptions()
-# # chromeOptions.add_argument('--headless')
-# chromeOptions.add_argument('--window-size=1920,1080')
-# driver = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=chromeOptions)
-
-
 driver = webdriver.Chrome(ChromeDriverManager().install())
 # 指定した要素が見つかるまでの待ち時間を設定する 今回は最大10秒待機する
 driver.implicitly_wait(10)
@@ -206,9 +199,6 @@ def Sort(current_time, new_folder_path):
             del Elastic_btn
             gc.collect()
 
-            # 指定した要素が見つかるまでの待ち時間を設定する 今回は最大10秒待機する
-            # driver.implicitly_wait(10)
-
         # エラーが出た場合はエラー内容をプリントする
         except Exception as e:
             traceback.print_exc()
@@ -236,22 +226,15 @@ def Sort(current_time, new_folder_path):
             waiti_btn = driver.find_element_by_xpath("//img[contains(@src,'Sorter/Rule/Thumbnail?sorter_rule_id=36466')]")
             waiti_btn.click()
 
-            # メモリ解放のため削除
-            del waiti_btn
-            gc.collect()
-
             # 要素が表示されるまで待機（最大で10秒待機）
             selector_wait("unit-item-divider")
 
-            # 最上段の詳細をクリックする
+            time.sleep(5)
+
+            # 最上段の詳細をクリックする btn btn-secondary input-group-btn col-12
             detail_btn = driver.find_elements_by_tag_name('button')[0].click()
 
-            # メモリ解放のため削除
-            del detail_btn
-            gc.collect()
-
             # 要素が表示されるまで待機（最大で10秒待機）
-            # selector_wait("unit-card-body")
             selector_wait("thumbnail-img")
 
         # エラーが出た場合はエラー内容をプリントする
@@ -393,200 +376,120 @@ def Sort(current_time, new_folder_path):
         # プログラムを終了する
         sys.exit()
 
-    # メモリー解放のため変数で定義した値を削除
-    del sort_btn, list_of_files, latest_file, zp
-    gc.collect()
-
     time.sleep(5)
 
     """ ここまでがOCR結果を指定のフォルダへダウンロードさせる部分 """
     # 各トレイ毎に処理を書くと長すぎるので繰り返し処理で回す
     # 各トレイ名が格納されたリストを作成する
-    tray_name_list = ["demo_藤田工務店", "demo_林商店", "demo_桑原農園"]
+    tray_name_list = ["demo_林商店", "demo_桑原農園", "demo_藤田工務店"]
 
     # 各トレイのIDが格納されたリストを作成する
-    tray_id_list = ["document-921706", "document-921671", "document-921670"]
+    tray_id_list = ["document-921671", "document-921670", "document-921706"]
 
-    # 変数tray_name_listに格納された要素数分繰り返しえ処理を行う
+    # 変数tray_name_listに格納された要素数分繰り返し処理を行う
     g = 0
+    files = []
     for g in range(3):
-        # print(tray_name_list[g])
+        print(g)
 
         if os.path.exists(new_folder_path + '/' + tray_name_list[g]) == True:
-            files = glob.glob(new_folder_path + '/' + tray_name_list[g] + "/*")
-            # print(tray_name_list[g] + '形式のFAXは' + str(len(files)) + "枚です")
+            files.append(glob.glob(new_folder_path + '/' + tray_name_list[g] + "/*"))
+            print(tray_name_list[g] + '形式のFAXは' + str(len(files)) + "枚です")
 
-            # 該当の帳票読み取り結果csvをセレニウムの操作で取得しに行く
-            # ホームボタンをおしてホームへ戻る
-            home_btn = driver.find_element_by_class_name('sorter-icon-button').click()
+    # 該当の帳票読み取り結果csvをセレニウムの操作で取得しに行く
+    # ホームボタンをおしてホームへ戻る
+    home_btn = driver.find_element_by_class_name('sorter-icon-button').click()
 
-            # メモリ解放の為、定義した変数の値を削除
-            del home_btn
-            gc.collect()
+    # メモリ解放の為、定義した変数の値を削除
+    del home_btn
+    gc.collect()
 
-            # csv仕分けデータのDL
-            Intelligent_btn = driver.find_element_by_id("unit-download-form")
-            Intelligent_btn.click()
+    # 3秒待機
+    time.sleep(3)
 
-            # メモリ解放の為、定義した変数の値を削除
-            del Intelligent_btn
-            gc.collect()
+    # csv仕分けデータのDL
+    Intelligent_btn = driver.find_element_by_id("unit-download-form")
+    Intelligent_btn.click()
 
-            # # ワイチFAX
-            # driver.find_element_by_id('docset-124485').click()
+    # メモリ解放の為、定義した変数の値を削除
+    del Intelligent_btn
+    gc.collect()
 
-            # 3秒待機
-            time.sleep(3)
-
-            """
-            # 各formの定義をクリックする
-            # print(tray_id_list[g])
-            # 無限ループが怖いのでcountを設けて20回繰り返してもダメな場合はプログラムを終了させる
-            # 変数countを用意する
-            count = 0
-            # 通信速度によってボタンが出ていない場合があるので、ボタンが押せるようになるまで１秒待つ
-            while not driver.find_element_by_id(tray_id_list[g]).is_enabled() == True and not count == 20:
-                # print("ボタンが押せない為1秒待機させます")
-                time.sleep(1)
-
-                count += 1
-                # print("countは" + str(count) + "です")
-            else:
-                if count == 20:
-                    print("帳票定義のボタンが押せなかった為プログラムを終了しました")
-                    # エラー内容を通知
-                    # slack_post("帳票定義のボタンが押せなかった為プログラムを終了しました")
-
-                    # ブラウザを閉じる
-                    driver.quit()
-                    # メモリ解放の為、定義した変数の値を削除
-                    del count
-                    gc.collect()
-                    # プログラムを終了する
-                    sys.exit()
-
-                else:
-                    driver.find_element_by_id(tray_id_list[g]).click()
-                    # メモリ解放の為、定義した変数の値を削除
-                    del count
-                    gc.collect()
-
-            # 8秒待機
-            time.sleep(8)
-
-            # 無限ループが怖いのでcountを設けて20回繰り返してもダメな場合はプログラムを終了させる
-            # 変数countを用意する
-            count = 0
-            # 通信速度によってボタンが出ていない場合があるので、ボタンが押せるようになるまで１秒待つ
-            while not driver.find_elements_by_tag_name('button')[5].is_enabled() == True and not count == 20:
-                # print("ボタンが押せない為1秒待機させます")
-                time.sleep(1)
-
-                count += 1
-                # print("countは" + str(count) + "です")
-            else:
-                if count == 20:
-                    # print("帳票定義の読み取り結果詳細ボタンが押せなかった為プログラムを終了しました")
-                    # エラー内容を通知
-                    # slack_post("帳票定義の読み取り結果詳細ボタンが押せなかった為プログラムを終了しました")
-                    print("帳票定義の読み取り結果詳細ボタンが押せなかった為プログラムを終了しました")
-                    # ブラウザを閉じる
-                    driver.quit()
-                    # メモリ解放の為、定義した変数の値を削除
-                    del count
-                    gc.collect()
-                    # プログラムを終了する
-                    sys.exit()
-
-                else:
-                    # 最上段読み取り結果の「CSVダウンロード」ボタンをクリックする
-                    driver.find_elements_by_tag_name('button')[5].click()
-                    # メモリ解放の為、定義した変数の値を削除
-                    del count
-                    gc.collect()
-            """
-            # 8秒待機
-            time.sleep(8)
-
-
-            # ダウンロード結果を格納するフォルダを新規作成
-            # ここに後々、仕分け結果のトレイ毎のフォルダが入ります。
-            new_folder_path = './sortresult/' + current_time
-            os.makedirs(new_folder_path, exist_ok=True)
-
-            # ローカルのダウンロードフォルダ内にあるcsvファイルのパスを一覧で取得する
-            csv_file = glob.glob(dl_path + "\\*.csv")
-            print(csv_file)
-            # ローカルのダウンロードフォルダ内にある最新ファイルのパスを取得する
-            latest_csv = max(csv_file, key=os.path.getctime)
-            print(latest_csv)
-            # メモリ解放の為、定義した変数の値を削除
-
-            del csv_file
-            gc.collect()
-            # 取得したCSVファイルパスを指定フォルダへ移動させる
-            new_csv_path = shutil.move(latest_csv, "./sortresult/" + current_time)
-            # print(new_csv_path)
-            # メモリ解放の為、定義した変数の値を削除
-            del latest_csv
-            gc.collect()
-            # 読み取り結果のCSVを読み込み品名を抽出する
-            csv_df = pd.read_csv(new_csv_path, encoding="shift-jis", usecols=[4]).values.tolist()
-            # print(csv_df)
-            # メモリ解放の為、定義した変数の値を削除
-            del new_csv_path
-            gc.collect()
-
-            # 取得したcsvの上から順に品名を取り出す際に使う値の変数
-            num = 0
-            # リネームするファイル名が重複した場合品名末尾に「_数字」を
-            # つける為に使用する変数
-            exsist_num = 1
-            for file in files:
-                try:
-                    # print(file)
-                    # ファイルの名称に使用できない文字がcsv_df[num][0]に含まれている場合があるのでその場合はリネームして削除する
-                    if ":" in str(csv_df[num][0]):
-                        csv_df[num][0] = csv_df[num][0].replace(":", "")
-
-                    elif "/" in str(csv_df[num][0]):
-                        csv_df[num][0] = csv_df[num][0].replace("/", "")
-
-                    elif "?" in str(csv_df[num][0]):
-                        csv_df[num][0] = csv_df[num][0].replace("?", "")
-
-                    elif "<" in str(csv_df[num][0]):
-                        csv_df[num][0] = csv_df[num][0].replace("<", "")
-
-                    elif ">" in str(csv_df[num][0]):
-                        csv_df[num][0] = csv_df[num][0].replace(">", "")
-
-                    elif "|" in str(csv_df[num][0]):
-                        csv_df[num][0] = csv_df[num][0].replace("|", "")
-
-                    # 読み取り結果の画像をcsvの品名情報を元に全てリネームする
-                    os.rename(file, './getdata/' + current_time + '/' + tray_name_list[g] + '/' + str(csv_df[num][0]) + '.jpg')
-
-                    num += 1
-
-                # 同一品名が存在していた場合、リネーム時にエラーが発生するので例外処理させる
-                except FileExistsError:
-                    # print(file)
-
-                    # 読み取り結果の画像をcsvの品名情報を元に全てリネームする
-                    os.rename(file, './getdata/' + current_time + '/' + tray_name_list[g] + '/' +
-                              str(csv_df[num][0]) + "_" + str(exsist_num + 1) + '.jpg')
-
-                    # webhookにダブりありましたよメッセージを完了時おくるようにする
-                    # slack_post("<!channel>\n重複ファイルがありました（" + str(csv_df[num][0]) + "）")
-                    print("重複ファイルがありました"+str(csv_df[num][0]) )
-
-                    num += 1
-                    exsist_num += 1
-
-    """ ここまでが仕分け結果の各ファイルをcsvの結果を元にリネームする部分　"""
+    # 8秒待機
+    time.sleep(8)
 
     driver.quit()
+
+    # ダウンロード結果を格納するフォルダを新規作成
+    # ここに後々、仕分け結果のトレイ毎のフォルダが入ります。
+    new_folder_path = './sortresult/' + current_time
+    os.makedirs(new_folder_path, exist_ok=True)
+
+    # ローカルのダウンロードフォルダ内にあるcsvファイルのパスを一覧で取得する
+    csv_file = glob.glob(dl_path + "\\*.csv")
+    print(csv_file)
+    # ローカルのダウンロードフォルダ内にある最新ファイルのパスを取得する
+    latest_csv = max(csv_file, key=os.path.getctime)
+    print(latest_csv)
+
+    # 取得したCSVファイルパスを指定フォルダへ移動させる
+    new_csv_path = shutil.move(latest_csv, "./sortresult/" + current_time)
+    # print(new_csv_path)
+
+    # 読み取り結果のCSVを読み込み品名を抽出する
+    csv_df = pd.read_csv(new_csv_path, encoding="shift-jis", usecols=[4]).values.tolist()
+    print(csv_df)
+
+    # 取得したcsvの上から順に品名を取り出す際に使う値の変数
+    num = 0
+    # リネームするファイル名が重複した場合品名末尾に「_数字」を
+    # つける為に使用する変数
+    exsist_num = 1
+    for file in files:
+        try:
+            print(file)
+            print(files)
+            # ファイルの名称に使用できない文字がcsv_df[num][0]に含まれている場合があるのでその場合はリネームして削除する
+            if ":" in str(csv_df[num][0]):
+                csv_df[num][0] = csv_df[num][0].replace(":", "")
+
+            elif "/" in str(csv_df[num][0]):
+                csv_df[num][0] = csv_df[num][0].replace("/", "")
+
+            elif "?" in str(csv_df[num][0]):
+                csv_df[num][0] = csv_df[num][0].replace("?", "")
+
+            elif "<" in str(csv_df[num][0]):
+                csv_df[num][0] = csv_df[num][0].replace("<", "")
+
+            elif ">" in str(csv_df[num][0]):
+                csv_df[num][0] = csv_df[num][0].replace(">", "")
+
+            elif "|" in str(csv_df[num][0]):
+                csv_df[num][0] = csv_df[num][0].replace("|", "")
+
+            # 読み取り結果の画像をcsvの品名情報を元に全てリネームする
+            os.rename(file[0], './getdata/' + current_time + '/' + tray_name_list[num] + '/' + str(csv_df[num][0]) + '.jpg')
+            print(str(tray_name_list[g]))
+
+            num += 1
+
+        # 同一品名が存在していた場合、リネーム時にエラーが発生するので例外処理させる
+        except FileExistsError:
+            # print(file)
+
+            # 読み取り結果の画像をcsvの品名情報を元に全てリネームする
+            os.rename(file[0], './getdata/' + current_time + '/' + tray_name_list[g] + '/' +
+                      str(csv_df[num][0]) + "_" + str(exsist_num + 1) + '.jpg')
+
+            # webhookにダブりありましたよメッセージを完了時おくるようにする
+            # slack_post("<!channel>\n重複ファイルがありました（" + str(csv_df[num][0]) + "）")
+            print("重複ファイルがありました"+str(csv_df[num][0]) )
+
+            num += 1
+            exsist_num += 1
+
+    """ ここまでが仕分け結果の各ファイルをcsvの結果を元にリネームする部分　"""
 
     # サブフォルダのパスを格納するリスト
     manual_input = []

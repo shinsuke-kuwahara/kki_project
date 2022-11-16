@@ -12,7 +12,7 @@ import datetime
 import logging
 from demo_request import D_request
 from download_sort import demo_transfer
-# Slackへ通知を行うモジュール1444
+# Slackへ通知を行うモジュール
 # from　slack_post import demo_slack_pos
 
 """ ↑モジュール """
