@@ -15,6 +15,7 @@ from download_sort import demo_transfer
 # Slackへ通知を行うモジュール
 # from　slack_post import demo_slack_pos
 from kki_function.loginfo import loginfo
+
 """ ↑モジュール """
 
 """ ↓logの設定 """
