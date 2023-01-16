@@ -12,12 +12,12 @@ import time
 from webdriver_manager.chrome import ChromeDriverManager
 import logging
 
-from kki_function.slack import slack_post
-from kki_function.blynk import lcd_write
-from kki_function.blynk import pins_read
-from kki_function.blynk import pin_write
-from kki_function.blynk import pins_clear
-from kki_function.blynk import pins_reset
+from kki_func.slack import slack_post
+from kki_func.blynk import lcd_write
+from kki_func.blynk import pins_read
+from kki_func.blynk import pin_write
+from kki_func.blynk import pins_clear
+from kki_func.blynk import pins_reset
 
 
 TOKEN = "FJONUUiXQb7dQafFyi_GtFXc7baNdQpF"

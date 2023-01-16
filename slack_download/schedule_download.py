@@ -6,8 +6,8 @@ import pandas as pd
 import pathlib
 from datetime import timezone, timedelta, datetime
 
-from kki_function.slack import slack_robo_post
-from kki_function.loginfo import loginfo
+from kki_func.slack import slack_robo_post
+from kki_func.loginfo import loginfo
 
 # 製造部用スリット予定保存先
 SEIZOU_DIR = pathlib.WindowsPath(r"\\10.100.108.150\disk1\販売管理データ\製造部用\スリット予定")
