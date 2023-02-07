@@ -1,6 +1,18 @@
 import requests
 
 
+def pin_read(token, pin):
+    """
+    :param token:string
+    :param pin:string
+    :return:
+    """
+    URI = f'https://blynk.cloud/external/api/get?token={token}&{pin}'
+
+    res = requests.get(url=URI)
+    return res.json()
+
+
 # 指定した複数のピンの状態を取得
 def pins_read(token, pins):
     """
@@ -33,6 +45,18 @@ def pin_write(token, pin, value):
     }
 
     requests.get(url=api_url, params=params)
+
+
+def pin_clear(token, pin, val):
+    """
+    :param token:string
+    :param pin: string
+    :param val: string
+    :return:
+    """
+    URI = f'https://blynk.cloud/external/api/update?token={token}&{pin}={val}'
+
+    res = requests.get(url=URI)
 
 
 # ピンを全てOFFにする
